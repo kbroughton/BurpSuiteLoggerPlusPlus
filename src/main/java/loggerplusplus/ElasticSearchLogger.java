@@ -8,9 +8,11 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
+import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,6 +31,8 @@ public class ElasticSearchLogger implements LogEntryListener{
     ArrayList<LogEntry> pendingEntries;
     private InetAddress address;
     private short port;
+    private String username;
+    private String password;
     private String clusterName;
     private boolean isEnabled;
     private String indexName;
@@ -51,10 +55,16 @@ public class ElasticSearchLogger implements LogEntryListener{
         if(isEnabled){
             this.address = InetAddress.getByName(prefs.getEsAddress());
             this.port = prefs.getEsPort();
+            this.username = prefs.getEsUsername();
+            this.password = prefs.getEsPassword();
             this.clusterName = prefs.getEsClusterName();
             this.indexName = prefs.getEsIndex();
-            Settings settings = Settings.builder().put("cluster.name", this.clusterName).build();
-            client = new PreBuiltTransportClient(settings)
+            Builder settingsBuilder = Settings.builder().put("cluster.name", this.clusterName);
+            if (this.username != "" && this.password != "") {
+              settingsBuilder.put("xpack.security.user", this.username + ":" + this.password);
+            }
+            Settings settings = settingsBuilder.build();
+            client = new PreBuiltXPackTransportClient(settings)
                 .addTransportAddress(new TransportAddress(this.address, this.port));
             adminClient = client.admin().indices();
             createIndices();

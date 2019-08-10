@@ -1,8 +1,8 @@
 //
 // Burp Suite Logger++
-// 
+//
 // Released as open source by NCC Group Plc - https://www.nccgroup.trust/
-// 
+//
 // Developed by Soroush Dalili (@irsdl)
 //
 // Project link: http://www.github.com/nccgroup/BurpSuiteLoggerPlusPlus
@@ -68,6 +68,8 @@ public class LoggerPreferences {
 	private boolean autoImportProxyHistory;
 	private String esAddress;
 	private short esPort;
+	private String esUsername;
+	private String esPassword;
 	private String esClusterName;
 	private String esIndex;
 	private int esDelay;
@@ -329,6 +331,24 @@ public class LoggerPreferences {
 		this.esPort = port;
 	}
 
+	public String getEsUsername() {
+		return esUsername;
+	}
+
+	public void setEsUsername(String esUsername){
+		LoggerPlusPlus.getCallbacks().saveExtensionSetting("esUsername", esUsername);
+		this.esUsername = esUsername;
+	}
+
+	public String getEsPassword() {
+		return esPassword;
+	}
+
+	public void setEsPassword(String esPassword){
+		LoggerPlusPlus.getCallbacks().saveExtensionSetting("esPassword", esPassword);
+		this.esPassword = esPassword;
+	}
+
 	public String getEsClusterName(){
 		return esClusterName;
 	}
@@ -440,6 +460,8 @@ public class LoggerPreferences {
 
 		this.esAddress = getStringSetting("esAddress", "127.0.0.1");
 		this.esPort = (short) getIntSetting("esPort", 9300);
+		this.esUsername = getStringSetting("esUsername", "");
+		this.esPassword = getStringSetting("esPassword", "");
 		this.esClusterName = getStringSetting("esClusterName", "elasticsearch");
 		this.esIndex = getStringSetting("esIndex", "logger");
 		this.esDelay = getIntSetting("esDelay", 120);
@@ -529,7 +551,7 @@ public class LoggerPreferences {
 		LoggerPlusPlus.getCallbacks().saveExtensionSetting("layout", null);
 		LoggerPlusPlus.getCallbacks().saveExtensionSetting("msgviewlayout", null);
 	}
-	
+
 	public void resetTableSettings(){
 		setTableDetailsJSONString("");
 	}
