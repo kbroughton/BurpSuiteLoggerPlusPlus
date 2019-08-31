@@ -33,6 +33,9 @@ public class ElasticSearchLogger implements LogEntryListener{
     private short port;
     private String username;
     private String password;
+    private String clientKeyPath;
+    private String clientCertificatePath;
+    private String certificateAuthorityPath;
     private String clusterName;
     private boolean isEnabled;
     private String indexName;
@@ -57,11 +60,18 @@ public class ElasticSearchLogger implements LogEntryListener{
             this.port = prefs.getEsPort();
             this.username = prefs.getEsUsername();
             this.password = prefs.getEsPassword();
+            this.clientKeyPath = prefs.getEsClientKeyPath();
+            this.clientCertificatePath = prefs.getEsClientCertificatePath();
+            this.certificateAuthorityPath = prefs.getEsCertificateAuthorityPath();
             this.clusterName = prefs.getEsClusterName();
             this.indexName = prefs.getEsIndex();
             Builder settingsBuilder = Settings.builder().put("cluster.name", this.clusterName);
-            if (this.username != "" && this.password != "") {
+            if (this.username != "" && this.password != "" && this.clientKeyPath != "" && this.clientCertificatePath != "" && this.certificateAuthorityPath != "") {
               settingsBuilder.put("xpack.security.user", this.username + ":" + this.password);
+              settingsBuilder.put("xpack.security.transport.ssl.enabled", true);
+              settingsBuilder.put("xpack.security.transport.ssl.key", this.clientKeyPath);
+              settingsBuilder.put("xpack.security.transport.ssl.certificate", this.clientCertificatePath);
+              settingsBuilder.put("xpack.security.transport.ssl.certificate_authorities", this.certificateAuthorityPath);
             }
             Settings settings = settingsBuilder.build();
             client = new PreBuiltXPackTransportClient(settings)
