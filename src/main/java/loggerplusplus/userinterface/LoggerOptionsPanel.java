@@ -1,8 +1,8 @@
 //
 // Burp Suite Logger++
-// 
+//
 // Released as open source by NCC Group Plc - https://www.nccgroup.trust/
-// 
+//
 // Developed by Soroush Dalili (@irsdl)
 //
 // Project link: http://www.github.com/nccgroup/BurpSuiteLoggerPlusPlus
@@ -63,6 +63,8 @@ public class LoggerOptionsPanel extends JScrollPane{
     private final JToggleButton esEnabled = new JToggleButton("Disabled");
     private final JSpinner esPortSpinner = new JSpinner(new SpinnerNumberModel(9100, 0, 65535, 1));
     private final JTextField esAddressField = new JTextField();
+    private final JTextField esUsernameField = new JTextField();
+    private final JPasswordField esPasswordField = new JPasswordField();
     private final JTextField esClusterField = new JTextField();
     private final JTextField esIndexField = new JTextField();
     private final JSpinner esUploadDelay = new JSpinner(new SpinnerNumberModel(120, 10, 999999, 10));
@@ -110,7 +112,7 @@ public class LoggerOptionsPanel extends JScrollPane{
         statusPanel.setBorder(BorderFactory.createTitledBorder("Status"));
         statusPanel.add(tglbtnIsEnabled, BorderLayout.CENTER);
         innerContainer.add(statusPanel, gbc);
-        
+
         JPanel logFromPanel = new JPanel(new GridLayout(0, 1));
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -170,6 +172,8 @@ public class LoggerOptionsPanel extends JScrollPane{
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         JLabel esAddress = new JLabel("Address:");
+        JLabel esUsername = new JLabel("Username (optional):");
+        JLabel esPassword = new JLabel("Password (optional):");
         JLabel esClusterName = new JLabel("Cluster Name:");
         JLabel esIndexName = new JLabel("Index:");
         JLabel esRefreshTime = new JLabel("Upload Delay:");
@@ -193,10 +197,14 @@ public class LoggerOptionsPanel extends JScrollPane{
         gbc.gridy = 2;
         elasticPanel.add(esAddress, gbc);
         gbc.gridy = 3;
-        elasticPanel.add(esClusterName, gbc);
+        elasticPanel.add(esUsername, gbc);
         gbc.gridy = 4;
-        elasticPanel.add(esIndexName, gbc);
+        elasticPanel.add(esPassword, gbc);
         gbc.gridy = 5;
+        elasticPanel.add(esClusterName, gbc);
+        gbc.gridy = 6;
+        elasticPanel.add(esIndexName, gbc);
+        gbc.gridy = 7;
         elasticPanel.add(esRefreshTime, gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -207,12 +215,20 @@ public class LoggerOptionsPanel extends JScrollPane{
         elasticPanel.add(esPortSpinner, gbc);
         gbc.gridx = 1;
         gbc.gridy = 3;
+        gbc.weightx = 1;
+        elasticPanel.add(esUsernameField, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.weightx = 1;
+        elasticPanel.add(esPasswordField, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
         gbc.gridwidth = 2;
         gbc.weightx = 1;
         elasticPanel.add(esClusterField, gbc);
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         elasticPanel.add(esIndexField, gbc);
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         gbc.gridwidth = 1;
         elasticPanel.add(esUploadDelay, gbc);
         gbc.gridwidth = 1;
@@ -597,6 +613,43 @@ public class LoggerOptionsPanel extends JScrollPane{
                 loggerPreferences.setEsPort(spinnerval.shortValue());
             }
         });
+
+        this.esUsernameField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {}
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {}
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                toggleEsEnabledButton(false);
+            }
+        });
+        this.esUsernameField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                super.focusLost(focusEvent);
+                loggerPreferences.setEsUsername(esUsernameField.getText());
+            }
+        });
+
+        this.esPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {}
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {}
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                toggleEsEnabledButton(false);
+            }
+        });
+        this.esPasswordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                super.focusLost(focusEvent);
+                loggerPreferences.setEsPassword(esPasswordField.getText());
+            }
+        });
+
         this.esClusterField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent documentEvent) {}
