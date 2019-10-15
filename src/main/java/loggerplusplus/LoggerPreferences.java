@@ -70,6 +70,9 @@ public class LoggerPreferences {
 	private short esPort;
 	private String esUsername;
 	private String esPassword;
+	private String esClientKeyPath;
+	private String esClientCertificatePath;
+	private String esCertificateAuthorityPath;
 	private String esClusterName;
 	private String esIndex;
 	private int esDelay;
@@ -349,6 +352,33 @@ public class LoggerPreferences {
 		this.esPassword = esPassword;
 	}
 
+	public String getEsClientKeyPath() {
+		return esClientKeyPath;
+	}
+
+	public void setEsClientKeyPath(String esClientKeyPath) {
+		LoggerPlusPlus.getCallbacks().saveExtensionSetting("esClientKeyPath", esClientKeyPath);
+		this.esClientKeyPath = esClientKeyPath;
+	}
+
+	public String getEsClientCertificatePath() {
+		return esClientCertificatePath;
+	}
+
+	public void setEsClientCertificatePath(String esClientCertificatePath) {
+		LoggerPlusPlus.getCallbacks().saveExtensionSetting("esClientCertificatePath", esClientCertificatePath);
+		this.esClientCertificatePath = esClientCertificatePath;
+	}
+
+	public String getEsCertificateAuthorityPath() {
+		return esCertificateAuthorityPath;
+	}
+
+	public void setEsCertificateAuthorityPath(String esCertificateAuthorityPath) {
+		LoggerPlusPlus.getCallbacks().saveExtensionSetting("esCertificateAuthorityPath", esCertificateAuthorityPath);
+		this.esCertificateAuthorityPath = esCertificateAuthorityPath;
+	}
+
 	public String getEsClusterName(){
 		return esClusterName;
 	}
@@ -462,6 +492,9 @@ public class LoggerPreferences {
 		this.esPort = (short) getIntSetting("esPort", 9300);
 		this.esUsername = getStringSetting("esUsername", "");
 		this.esPassword = getStringSetting("esPassword", "");
+		this.esClientKeyPath = getStringSetting("esClientKeyPath", "");
+		this.esClientCertificatePath = getStringSetting("esClientCertificatePath", "");
+		this.esCertificateAuthorityPath = getStringSetting("esCertificateAuthorityPath", "");
 		this.esClusterName = getStringSetting("esClusterName", "elasticsearch");
 		this.esIndex = getStringSetting("esIndex", "logger");
 		this.esDelay = getIntSetting("esDelay", 120);

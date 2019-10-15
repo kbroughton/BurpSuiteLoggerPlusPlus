@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +66,12 @@ public class LoggerOptionsPanel extends JScrollPane{
     private final JTextField esAddressField = new JTextField();
     private final JTextField esUsernameField = new JTextField();
     private final JPasswordField esPasswordField = new JPasswordField();
+    private final JButton btnGetClientKey = new JButton("Client Key...");
+    private final JTextField esClientKeyField = new JTextField();
+    private final JButton btnGetClientCertificate = new JButton("Client Certificate...");
+    private final JTextField esClientCertificateField = new JTextField();
+    private final JButton btnGetCertificateAuthority = new JButton("Certificate Authority...");
+    private final JTextField esCertificateAuthorityField = new JTextField();
     private final JTextField esClusterField = new JTextField();
     private final JTextField esIndexField = new JTextField();
     private final JSpinner esUploadDelay = new JSpinner(new SpinnerNumberModel(120, 10, 999999, 10));
@@ -206,6 +213,12 @@ public class LoggerOptionsPanel extends JScrollPane{
         elasticPanel.add(esIndexName, gbc);
         gbc.gridy = 7;
         elasticPanel.add(esRefreshTime, gbc);
+        gbc.gridy = 8;
+        elasticPanel.add(btnGetClientKey, gbc);
+        gbc.gridy = 9;
+        elasticPanel.add(btnGetClientCertificate, gbc);
+        gbc.gridy = 10;
+        elasticPanel.add(btnGetCertificateAuthority, gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1;
@@ -234,6 +247,13 @@ public class LoggerOptionsPanel extends JScrollPane{
         gbc.gridwidth = 1;
         gbc.gridx = 2;
         elasticPanel.add(esSecondsHint, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 8;
+        elasticPanel.add(esClientKeyField, gbc);
+        gbc.gridy = 9;
+        elasticPanel.add(esClientCertificateField, gbc);
+        gbc.gridy = 10;
+        elasticPanel.add(esCertificateAuthorityField, gbc);
 
 
 
@@ -681,6 +701,78 @@ public class LoggerOptionsPanel extends JScrollPane{
             public void stateChanged(ChangeEvent changeEvent) {
                 loggerPreferences.setEsDelay((Integer) esUploadDelay.getValue());
                 toggleEsEnabledButton(false);
+            }
+        });
+
+        this.btnGetClientKey.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Choose a client key");
+
+                int val = chooser.showOpenDialog(null);
+                if (val == JFileChooser.APPROVE_OPTION) {
+                  File file = chooser.getSelectedFile();
+                  String filePath = file.getAbsolutePath();
+                  esClientKeyField.setText(filePath);
+                  loggerPreferences.setEsClientKeyPath(esClientKeyField.getText());
+                }
+            }
+        });
+
+        this.esClientKeyField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                super.focusLost(focusEvent);
+                loggerPreferences.setEsClientKeyPath(esClientKeyField.getText());
+            }
+        });
+
+        this.btnGetClientCertificate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Choose a client certificate");
+
+                int val = chooser.showOpenDialog(null);
+                if (val == JFileChooser.APPROVE_OPTION) {
+                  File file = chooser.getSelectedFile();
+                  String filePath = file.getAbsolutePath();
+                  esClientCertificateField.setText(filePath);
+                  loggerPreferences.setEsClientCertificatePath(esClientCertificateField.getText());
+                }
+            }
+        });
+
+        this.esClientCertificateField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                super.focusLost(focusEvent);
+                loggerPreferences.setEsClientCertificatePath(esClientCertificateField.getText());
+            }
+        });
+
+        this.btnGetCertificateAuthority.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Choose a certificate authority");
+
+                int val = chooser.showOpenDialog(null);
+                if (val == JFileChooser.APPROVE_OPTION) {
+                  File file = chooser.getSelectedFile();
+                  String filePath = file.getAbsolutePath();
+                  esCertificateAuthorityField.setText(filePath);
+                  loggerPreferences.setEsCertificateAuthorityPath(esCertificateAuthorityField.getText());
+                }
+            }
+        });
+
+        this.esCertificateAuthorityField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                super.focusLost(focusEvent);
+                loggerPreferences.setEsCertificateAuthorityPath(esCertificateAuthorityField.getText());
             }
         });
 
