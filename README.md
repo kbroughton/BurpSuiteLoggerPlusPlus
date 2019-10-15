@@ -8,6 +8,8 @@ Originally Developed by Soroush Dalili [@irsdl](https://twitter.com/irsdl)
 
 Further developed by Corey Arthur [@CoreyD97](https://twitter.com/CoreyD97)
 
+Further developed by Daniel Lim and Kesten Broughton to add SSL and auth.
+
 Project link: http://www.github.com/nccgroup/BurpSuiteLoggerPlusPlus
 
 Released under AGPL see LICENSE for more information
@@ -29,6 +31,8 @@ Screenshots
 
 ![Row Highlights](https://i.imgur.com/xGYbx38g.jpg)
 
+![Configure Options](https://i.imgur.com/lNfGyj0.png)
+
 <br />
 
 
@@ -42,17 +46,27 @@ Step 2. (Adding to Burp) In Burp Suite, click on the "Extender" tab, then in the
 
 Step 3. (Testing) Now you should be able to see the "Logger++" tab in Burp Suite. If it cannot log anything, check your Burp Suite extension settings. If the save buttons are disabled, make sure that the requested libraries have been loaded successfully; Unload and then reload the extension and try again. If you have found an issue, please report it in the GitHub project.
 
-Step 4. (Configuring) You can configure this extension by using its "option" tab and by right click on the columns' headers.
+Step 4. (Elasticsearch) Run docker-compose up -d to start the elastic and kibana containers.
 
-Step 5. (Using!) Now you can use this extension!
+Step 5. (Configuring) You can configure this extension by using its "option" tab and by right click on the columns' headers. You will need to copy the SSL keys as demonstrated in local_run.sh.
+
+Step 6. (Using!) Now you can use this extension!
 
 <b>Requirements:</b>
 - Latest version of Burp Suite
 - Java version 7 or above
+- Running elasticsearch (tested on elastic 6.8.1 and odfe 1.2.0 )
+- Docker (optional for easy deployment of elastic)
+
+## Building Locally and Development
+
+Modify build.gradle to point to the correct path to your burpsuite_pro.jar file.
+Select the build.gradle file.
+Run (Default)
 
 <b>Features:</b>
 
-- Works with the latest version of Burp Suite (tested on 1.7.27)
+- Works with the latest version of Burp Suite (tested on 2.1.03 and 1.7.27)
 - Logs all the tools that are sending requests and receiving responses
 - Ability to log from a specific tool
 - Ability to save the results in CSV format
