@@ -72,6 +72,7 @@ public class ElasticSearchLogger implements LogEntryListener{
               settingsBuilder.put("xpack.security.transport.ssl.key", this.clientKeyPath);
               settingsBuilder.put("xpack.security.transport.ssl.certificate", this.clientCertificatePath);
               settingsBuilder.put("xpack.security.transport.ssl.certificate_authorities", this.certificateAuthorityPath);
+              settingsBuilder.put("xpack.security.transport.ssl.verification_mode","certificate");
             }
             Settings settings = settingsBuilder.build();
             client = new PreBuiltXPackTransportClient(settings)
