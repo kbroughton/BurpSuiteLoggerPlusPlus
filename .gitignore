@@ -1,5 +1,6 @@
 .*/
 bin/
+build/
 Util/
 gradle/
 libs/burpsuite_pro.jar
@@ -9,3 +10,6 @@ TODO
 .project
 build.xml
 hs_err_*.log
+*.crt
+*.pem
+*.iml

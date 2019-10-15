@@ -15,7 +15,8 @@ dependencies {
     compile 'org.apache.commons:commons-text:1.1'
     compile 'org.elasticsearch.client:transport:6.0.0'
     compile "org.elasticsearch.client:x-pack-transport:7.3.1"
-    testCompile files('/opt/BurpSuitePro/burpsuite_pro.jar')
+    # testCompile files('/opt/BurpSuitePro/burpsuite_pro.jar')
+    testCompile files('/Applications/Burp Suite Professional.app/Contents/java/app/burpsuite_pro.jar')
 }
 
 task fatJar(type: Jar) {
